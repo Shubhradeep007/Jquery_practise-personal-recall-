@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Animated Form</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.3s ease-in;
+    }
+    .error.show {
+      opacity: 1;
+    }
+
+    /* Slide-down animation for developer fields */
+    .slide-down {
+      animation: slideDown 0.5s ease-out forwards;
+    }
+    .slide-up {
+      animation: slideUp 0.5s ease-out forwards;
+    }
+
+    @keyframes slideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Button hover animation */
+    .btn-primary {
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #007bff;
+      transform: translateY(-3px);
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 768px) {
+      .error {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .error {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Registration Form</h2>
+    <form id="registrationForm" novalidate>
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+        <div class="error" id="nameError"></div>
+      </div>
+      
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+        <div class="error" id="emailError"></div>
+      </div>
+      
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+        <div class="error" id="passwordError"></div>
+      </div>
+      
+      <!-- Occupation Dropdown -->
+      <div class="form-group">
+        <label for="occupation">Occupation</label>
+        <select class="form-control" id="occupation" required>
+          <option value="">Select your occupation</option>
+          <option value="student">Student</option>
+          <option value="developer">I am a developer</option>
+          <option value="teacher">Teacher</option>
+        </select>
+        <div class="error" id="occupationError"></div>
+      </div>
+      
+      <!-- Developer-specific fields (hidden by default) -->
+      <div id="developerFields" class="hidden">
+        <div class="form-group">
+          <label for="language">Favorite Programming Language</label>
+          <select class="form-control" id="language">
+            <option value="">Select a language</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+            <option value="C++">C++</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="experience">Years of Experience</label>
+          <input type="number" class="form-control" id="experience" placeholder="Enter your experience in years">
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+  </div>
+
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    $(document).ready(function() {
+      // Show/Hide the developer fields with animation based on the dropdown selection
+      $('#occupation').change(function() {
+        if ($(this).val() === 'developer') {
+          $('#developerFields').removeClass('slide-up hidden').addClass('slide-down');
+        } else {
+          $('#developerFields').removeClass('slide-down').addClass('slide-up');
+          setTimeout(function() {
+            $('#developerFields').addClass('hidden');
+          }, 500); // Delay hiding to allow animation to finish
+        }
+      });
+
+      // Form validation with animation on error
+      $('#registrationForm').submit(function(event) {
+        event.preventDefault(); // Prevent form submission to allow validation
+        
+        let isValid = true;
+
+        // Name validation
+        const name = $('#name').val().trim();
+        if (name === '') {
+          isValid = false;
+          $('#nameError').text('Please enter your name.').addClass('show');
+        } else {
+          $('#nameError').text('').removeClass('show');
+        }
+
+        // Email validation
+        const email = $('#email').val().trim();
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (email === '' || !emailPattern.test(email)) {
+          isValid = false;
+          $('#emailError').text('Please enter a valid email address.').addClass('show');
+        } else {
+          $('#emailError').text('').removeClass('show');
+        }
+
+        // Password validation
+        const password = $('#password').val().trim();
+        if (password.length < 6) {
+          isValid = false;
+          $('#passwordError').text('Password must be at least 6 characters long.').addClass('show');
+        } else {
+          $('#passwordError').text('').removeClass('show');
+        }
+
+        // Occupation validation
+        const occupation = $('#occupation').val();
+        if (occupation === '') {
+          isValid = false;
+          $('#occupationError').text('Please select your occupation.').addClass('show');
+        } else {
+          $('#occupationError').text('').removeClass('show');
+        }
+
+        // Developer-specific validation (only if developer is selected)
+        if (occupation === 'developer') {
+          const language = $('#language').val();
+          const experience = $('#experience').val();
+          if (language === '' || experience === '') {
+            isValid = false;
+            alert('Please complete the developer-specific fields.');
+          }
+        }
+
+        // If all fields are valid, submit the form
+        if (isValid) {
+          alert('Form submitted successfully!');
+          // Here you can handle the actual form submission, e.g., sending data to the server.
+        }
+      });
+    });
+  </script>
+</body>
+</html>
