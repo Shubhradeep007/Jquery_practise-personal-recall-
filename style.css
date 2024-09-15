@@ -1,0 +1,76 @@
+.hidden {
+    display: none;
+  }
+
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+  }
+
+  .error.show {
+    opacity: 1;
+  }
+
+  /* Slide-down animation for developer fields */
+  .slide-down {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+
+  .slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+
+  /* Button hover animation */
+  .btn-primary {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #007bff;
+    transform: translateY(-3px);
+  }
+
+  /* Media query for responsiveness */
+  @media (max-width: 768px) {
+    .error {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .error {
+      font-size: 11px;
+    }
+  }
