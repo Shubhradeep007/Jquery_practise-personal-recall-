@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>on() Example</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <button id="onButton">Click Me (on)</button>
+  <button id="addButton">Add New Button</button>
+
+  <!-- Placeholder for dynamically added buttons -->
+  <div id="dynamicButtons"></div>
+
+  <script>
+    // Attaching event handler using on() to the existing button
+    $("#onButton").on("click", function() {
+      alert("Button clicked using on()");
+    });
+
+    // Add a new button dynamically and delegate event handling using on()
+    $("#addButton").on("click", function() {
+      $("#dynamicButtons").append('<button class="newButton">New Button</button>');
+    });
+
+    // Event delegation: attaching handler to future elements with class 'newButton'
+    $(document).on("click", ".newButton", function() {
+      alert("New dynamically added button clicked using on()");
+    });
+  </script>
+</body>
+</html>

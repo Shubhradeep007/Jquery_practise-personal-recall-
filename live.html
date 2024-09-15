@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>live() Example</title>
+  <!-- Use an older version of jQuery for live() to work -->
+  <script src="https://code.jquery.com/jquery-1.6.4.min.js"></script>
+</head>
+<body>
+  <button class="liveButton">Click Me (live)</button>
+  <button id="addButtonLive">Add New Button</button>
+
+  <!-- Placeholder for dynamically added buttons -->
+  <div id="dynamicButtonsLive"></div>
+
+  <script>
+    // Attaching event handler using live() (old method)
+    $(".liveButton").live("click", function() {
+      alert("Button clicked using live()");
+    });
+
+    // Add a new button dynamically
+    $("#addButtonLive").click(function() {
+      $("#dynamicButtonsLive").append('<button class="liveButton">New Live Button</button>');
+    });
+  </script>
+</body>
+</html>
